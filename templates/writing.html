@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <title>글 작성 페이지</title>
+
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .body-container {
+            max-width:1000px;
+            width: 90%;
+            height: 100vh;
+            margin: auto;
+
+        }
+        .body-heading {
+            margin-top:95px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        .form-select {
+            width: 150px;
+        }
+
+        .form-label {
+            color: #0b2144;
+        }
+
+        .mypost {
+            max-width: 90%;
+            margin: auto;
+            box-shadow: 0px 0px 3px 0px gray;
+            padding: 50px;
+            background-color: #0b2144;
+            color: white;
+        }
+        .mbti {
+            margin:10px 10px 0px 0px;
+        }
+
+        .mybtn {
+            margin-top: 25px;
+            padding-left: 633px
+        }
+        .mybtn > button {
+            margin-left: 12px
+        }
+
+        #floatingTextarea2 {
+            height: 400px;
+            margin: 20px auto 10px auto;
+        }
+
+        .mbti-list {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        function save_writing() {
+            let title = $('#floatingInput').val()
+            let mbti = $('#mbti').val()
+            let contents = $('#floatingTextarea2').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/writing',
+                data: {title_give: title, mbti_give: mbti, contents_give: contents},
+                success: function (response) {
+                    alert(response['msg'])
+                    let postnum = response['postnum']
+                    window.location.href='/index?postnum='+postnum;
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="body-container">
+        <!--제목-->
+        <div class="body-heading"><h1>글 작성 페이지</h1></div>
+
+        <!--mbti-->
+        <div class="mypost">
+            <div class="mbti-list">
+                <div class="mbti"><h5>본인의 MBTI</h5></div>
+                <select class="form-select" aria-label="Default select example" id="mbti">
+                    <option selected>선택하기</option>
+                    <option value="ENFP">ENFP</option>
+                    <option value="ENFJ">ENFJ</option>
+                    <option value="ENTP">ENTP</option>
+                    <option value="ENTJ">ENTJ</option>
+                    <option value="ESFP">ESFP</option>
+                    <option value="ESFJ">ESFJ</option>
+                    <option value="ESTP">ESTP</option>
+                    <option value="ESTJ">ESTJ</option>
+                    <option value="INFP">INFP</option>
+                    <option value="INFJ">INFJ</option>
+                    <option value="INTP">INTP</option>
+                    <option value="INTJ">INTJ</option>
+                    <option value="ISFP">ISFP</option>
+                    <option value="ISFJ">ISFJ</option>
+                    <option value="ISTP">ISTP</option>
+                    <option value="ISTJ">ISTJ</option>
+                </select>
+            </div>
+            <!--제목 작성-->
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput" class="form-label" id="title">제목을 입력하세요.</label>
+            </div>
+
+            <!--    글 내용 작성-->
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                          style="height: 400px"></textarea>
+                <label for="floatingTextarea2" class="form-label">내용을 입력하세요.</label>
+            </div>
+            <!--작성 취소 버튼-->
+            <script>
+                function history_back() {
+                    history.back();
+                }
+            </script>
+            <div class="mybtn">
+                <button type="button" class="btn btn-outline-light" value="history.back()" onclick="history_back()">취소</button>
+                <button type="button" class="btn btn-outline-light" onclick="save_writing()">작성하기</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
